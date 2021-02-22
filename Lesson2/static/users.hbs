@@ -8,11 +8,11 @@
     <title>Document</title>
 </head>
 <body>
-<h1 style="background-color: aquamarine">All Users</h1>
+<h1>All Users</h1>
 {{#each users}}
-    <div style="background-color: cadetblue; padding: 10px">
-        <div>{{this.name}}</div>
-        <div>{{this.email}}</div>
+    <div style="width: 300px; background-color: burlywood; padding: 10px">
+        <div>User name: {{this.name}}</div>
+        <div>User email: {{this.email}}</div>
         <hr/>
     </div>
 {{/each}}

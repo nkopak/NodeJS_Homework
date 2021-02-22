@@ -7,14 +7,6 @@ const usersDir = path.join(__dirname, 'users');
 const usersFile = require(path.join(__dirname, 'users', 'users.js'));
 const users = usersFile.users;
 
-
-// const users = [
-//     {name: 'Dima', age: '25'},
-//     {name: 'Viktor', age: '18'},
-//     {name: 'Karina', age: '31'},
-//     {name: 'Petro Poroshenko', age: '53'}
-// ];
-
 app.use(express.json());
 app.use(express.urlencoded({extended: true}));
 
@@ -24,43 +16,6 @@ app.engine('.hbs', expressHbs({
     defaultLayout: false
 }));
 app.set('views', path.join(__dirname, 'static'));
-
-// app.get('/menu', (req, res) => {
-//     // res.send('Some page')
-//     res.write('Hello!');
-//     res.end();
-// })
-// app.get('/login', (req, res) => {
-//     res.render('login', {isOk: true, name: 'Success!'});
-// })
-// app.post('/login', (req, res) => {
-//     users.push(req.body);
-//     res.redirect('/users')
-// })
-//
-// app.get('/users', (req, res) => {
-//
-//     const {age} = req.query;
-//     const filteredUsers = users.filter(value => value.age === age)
-//     res.render('users', {users: filteredUsers})
-// })
-// app.get('/users/:userId', (req, res) => {
-//
-//     const {userId} = req.params;
-//     res.json(users[userId])
-// })
-//
-// fs.readdir(usersDir, (err, files) => {
-//         if (err) {
-//             console.log(err);
-//             return
-//         }
-//     // const users = require(path.join(usersDir, 'users.js'));
-//     console.log(usersFile.users);
-//
-//     }
-// )
-
 
 //-------------------------All users -------------------------
 app.get('/users', ((req, res) => {
@@ -73,13 +28,12 @@ app.get('/register', (req, res) => {
 })
 app.post('/register', ((req, res) => {
     const registeredUser = users.find(item => item.email === req.body.email)
-        if (registeredUser) {
-            res.redirect('/error')
-            return
-        }
+    if (registeredUser) {
+        res.redirect('/error')
+        return
+    }
     users.push(req.body)
     res.redirect('/users')
-
     // console.log(users);
     // console.log(registeredUser);
     // console.log(req.body);
@@ -90,22 +44,24 @@ app.get('/login', (req, res) => {
     res.render('login')
 })
 app.post('/login', (req, res) => {
-    const registeredUser = users.find(item => item.email === req.body.email)
-    if(!registeredUser){
-        res.redirect('/error')
+    const userId = users.findIndex(item => {
+
+        return (item.email === req.body.email && item.password === req.body.password)
+    })
+    // console.log(userId);
+    if (userId >= 0) {
+        res.redirect(`users/${userId}`)
         return
     }
-    res.redirect('users/:userId')
+    res.redirect('/error')
 })
 
 
 //-------------------------Full user info -------------------------
 app.get('/users/:userId', (req, res) => {
     const {userId} = req.params;
-    console.log(req.params);
-    res.json(users[userId]);
+    res.render('fullUserInfo', {userInfo: users[userId]});
 })
-
 
 
 //-------------------------Error page -------------------------
