@@ -1,5 +1,6 @@
 const errorCodes = require('../constants/errorCodes.enum');
 const errorMessages = require('../message/error.message');
+const userService = require('../service/user.service');
 
 module.exports = {
     checkIsIdValid: (req, res, next) => {
@@ -31,6 +32,23 @@ module.exports = {
 
             if (!found) {
                 throw new Error(errorMessages.INCORRECT_EMAIL[prefLang]);
+            }
+
+            next();
+        } catch (e) {
+            res.status(errorCodes.BAD_REQUEST).json(e.message);
+        }
+    },
+
+    isUserAlreadyExists: async (req, res, next) => {
+        try {
+            const { email, prefLang = 'en' } = req.body;
+
+            const userExists = await userService.findUsers({ email });
+
+            if (userExists.length) {
+                // console.log(userExists.length);
+                throw new Error((errorMessages.USER_IS_ALREADY_REGISTERED[prefLang]));
             }
 
             next();

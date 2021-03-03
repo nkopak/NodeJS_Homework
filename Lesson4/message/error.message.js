@@ -18,4 +18,9 @@ module.exports = {
         ua: 'Неправильно вказана ціна',
         en: 'Invalid price'
     },
+
+    USER_IS_ALREADY_REGISTERED: {
+        ua: 'Такий користувач вже зарєстрований',
+        en: 'Such user is already registered'
+    },
 };

@@ -16,6 +16,7 @@ module.exports = {
     getSingleUser: async (req, res) => {
         try {
             const { userId } = req.params;
+
             const user = await userService.findUserById(userId);
 
             res.json(user);
@@ -27,6 +28,7 @@ module.exports = {
     getUserByQuery: async (req, res) => {
         try {
             const { userId } = req.params;
+
             const user = await userService.findUserById(userId);
 
             res.json(user);
@@ -38,6 +40,7 @@ module.exports = {
     createUser: async (req, res) => {
         try {
             const { prefLang = 'en' } = req.body;
+
             await userService.createUser(req.body);
 
             res.status(errorCodes.CREATED).json(successMessages.USER_CREATED[prefLang]);
